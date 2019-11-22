@@ -1,0 +1,5 @@
+<root>
+    <item name='androidx.appcompat.app.AppCompatActivity T findViewById(int)'>
+        <annotation name='java.lang.Deprecated' />
+    </item>
+</root>
