@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "835281559318",
+    "firebase_url": "https://newser-cb152.firebaseio.com",
+    "project_id": "newser-cb152",
+    "storage_bucket": "newser-cb152.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835281559318:android:4169a61c6b7d664a28fa37",
+        "android_client_info": {
+          "package_name": "com.example.newser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835281559318-8s9qb4gsf96il5mt4mhafru8d8904jur.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.newser",
+            "certificate_hash": "77a133a684bd52ba0bb5e964304e2373d23bf15d"
+          }
+        },
+        {
+          "client_id": "835281559318-3jqndn4bn6heepmses2ha7ngumcqpaja.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm4RWt6Qkb7_CiM4_JhlmkFmkzcBmPJC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835281559318-3jqndn4bn6heepmses2ha7ngumcqpaja.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

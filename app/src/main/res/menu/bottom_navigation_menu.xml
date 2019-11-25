@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/couch"
-        android:icon="@drawable/ic_couch"
-        android:title="Couch" />
-    <item
-        android:id="@+id/news"
-        android:icon="@drawable/ic_news"
-        android:title="News" />
-    <item
-        android:id="@+id/filters"
-        android:icon="@drawable/ic_filters"
-        android:title="Filters" />
+        <item
+            android:id="@+id/couch"
+            android:icon="@drawable/ic_couch"
+            android:title="Couch" />
+        <item
+            android:id="@+id/news"
+            android:icon="@drawable/ic_news"
+            android:title="News" />
+        <item
+            android:id="@+id/filters"
+            android:icon="@drawable/ic_filters"
+            android:title="Filters" />
 
-    <item
-        android:id="@+id/profile"
-        android:title="Profile"
-        android:icon="@drawable/ic_profile"/>
-</menu>
+        <item
+            android:id="@+id/profile"
+            android:icon="@drawable/ic_profile"
+            android:title="Profile" />
+    </menu>
