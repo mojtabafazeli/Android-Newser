@@ -16,6 +16,11 @@ import com.example.newser.R;
 import com.example.newser.Utils.FirebaseMethods;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -29,16 +34,23 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseMethods firebaseMethods;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
+
+    private String append = "";
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
+        mContext = SignupActivity.this;
         firebaseMethods = new FirebaseMethods(mContext);
 
         initWidgets();
         setupFirebaseAuth();
+        init();
 
     }
 
@@ -52,7 +64,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 if (checkInputs(email, username, password)) {
                     mProgressBar.setVisibility(View.VISIBLE);
-                    firebaseMethods.reigsterNewEmail(email,password,username);
+                    firebaseMethods.registerNewEmail(email,password,username);
                 }
             }
         });
@@ -87,12 +99,38 @@ public class SignupActivity extends AppCompatActivity {
 
     private void setupFirebaseAuth() {
         mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     Log.d(TAG, "onAuthStateCahgned: signed-in:" + user.getUid());
+
+                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            //1st check: Make sure the username is not already in use
+                            if (firebaseMethods.checkIfUsernameExists(username, dataSnapshot)){
+                                append = myRef.push().getKey().substring(3,10);
+                            }
+                            username = username + append;
+                            //add new user to datbase
+                            firebaseMethods.addNewUser(email,username,"", "","");
+                            Log.d(TAG, "signup success");
+                            Toast.makeText(mContext,"signup successful.",Toast.LENGTH_LONG).show();
+                            //ad new user_account_settings to the database
+                             mAuth.signOut();
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    finish();
                 } else {
                     Log.d(TAG, "onAuthStateChanged:signed-out");
                 }

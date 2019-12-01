@@ -7,4 +7,8 @@
     <string name="already_a_member_login">Already a member? Login</string>
     <string name="login">Login</string>
     <string name="no_account_yet_create_one">No account yet? Create one</string>
+    <string name = "dbname_users">user</string>
+    <string name="dbname_user_account_settings">user_account_settings</string>
+    <string name="sign_out">Sign out</string>
+    <string name="profile_fragment">Profile Fragment</string>
 </resources>

@@ -3,29 +3,20 @@ package com.example.newser.News;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuItem;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.viewpager.widget.ViewPager;
-
 import com.example.newser.Login.LoginActivity;
 import com.example.newser.R;
 import com.example.newser.Utils.BottomNavigationViewHelper;
 import com.example.newser.Utils.SectionPagerAdapter;
-import com.example.newser.databinding.ActivityNewsNewBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-
-
 import java.util.Objects;
 
 
@@ -39,10 +30,9 @@ public class NewsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityNewsNewBinding activityNewsBinding = DataBindingUtil.setContentView(this, R.layout.activity_news_new);
+        setContentView(R.layout.activity_news_new);
 
         setupFirebaseAuth();
-
         setupBottomNavigationView();
         setupViewPager();
     }

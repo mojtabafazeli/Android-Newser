@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -47,8 +48,8 @@ public class LoginActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.GONE);
 
         setupFirebaseAuth();
-
         init();
+
     }
 
     private boolean isStringNull(String string) {
@@ -60,10 +61,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void init() {
-        Button btnLogin = findViewById(R.id.btn_login);
         mEmail = findViewById(R.id.input_email);
         mPassword = findViewById(R.id.input_password);
         mContext = LoginActivity.this;
+
+        Button btnLogin = findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,23 +78,34 @@ public class LoginActivity extends AppCompatActivity {
                     mProgressBar.setVisibility(View.VISIBLE);
 
                     mAuth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
-                                        Log.d(TAG, "signInWithEmail:success");
-                                        mProgressBar.setVisibility(View.GONE);
-                                    } else {
-                                        // If sign in fails, display a message to the user.
-                                        Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                        Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                                Toast.LENGTH_SHORT).show();
-                                        mProgressBar.setVisibility(View.GONE);
-                                    }
+                            .addOnCompleteListener(LoginActivity.this, task -> {
+                                FirebaseUser user = mAuth.getCurrentUser();
 
-                                    // ...
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "signInWithEmail:success");
+                                    mProgressBar.setVisibility(View.GONE);
+                                    try {
+                                        if (user.isEmailVerified()) {
+                                            Log.d(TAG, "EMAIL verified");
+                                            Intent intent = new Intent(LoginActivity.this, NewsActivity.class);
+                                            startActivity(intent);
+                                        } else {
+                                            mProgressBar.setVisibility(View.GONE);
+                                            mAuth.signOut();
+                                        }
+                                    } catch (NullPointerException e) {
+                                        Log.e(TAG, "onComplete: NullPointerExcpetion " + e.getMessage());
+                                    }
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                    Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                    mProgressBar.setVisibility(View.GONE);
                                 }
+
+                                // ...
                             });
                 }
             }
@@ -109,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         if (mAuth.getCurrentUser() != null) {
+            Log.d(TAG, "getCurrentUser: ");
             Intent intent = new Intent(this, NewsActivity.class);
             startActivity(intent);
             finish();
@@ -116,16 +130,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupFirebaseAuth() {
+        Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
+
         mAuth = FirebaseAuth.getInstance();
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
                 if (user != null) {
-                    Log.d(TAG, "onAuthStateCahgned: signed-in:" + user.getUid());
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
-                    Log.d(TAG, "onAuthStateChanged:signed-out");
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
+                // ...
             }
         };
     }
