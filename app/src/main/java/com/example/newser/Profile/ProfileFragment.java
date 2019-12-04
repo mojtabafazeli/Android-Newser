@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.newser.Login.LoginActivity;
 import com.example.newser.R;
 import com.example.newser.Utils.BottomNavigationViewHelper;
@@ -21,8 +23,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class ProfileFragment extends Fragment {
 
-    private static final String TAG = "ProfileFragment"
-            ;
+    private static final String TAG = "ProfileFragment";
     private androidx.appcompat.widget.Toolbar toolbar;
     private BottomNavigationViewEx bottomNavigationViewEx;
 
@@ -31,7 +32,7 @@ public class ProfileFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle saveInstanceState){
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle saveInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         toolbar = view.findViewById(R.id.profileToolBar);
@@ -49,7 +50,13 @@ public class ProfileFragment extends Fragment {
             Log.d(TAG, "OnMenuItemClick: clicked menu item: " + item);
 
             switch (item.getItemId()) {
-                case R.id.profileMenu:
+                case R.id.edit_profile:
+                    EditProfileFragment editFragment = new EditProfileFragment();
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, editFragment);
+                    transaction.commit();
+                    break;
+                case R.id.sing_out:
                     mAuth.signOut();
                     getActivity().finish();
                     Log.d(TAG, "onMenuItemClicked: Navigating");
