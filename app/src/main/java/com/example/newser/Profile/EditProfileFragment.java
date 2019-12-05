@@ -1,5 +1,6 @@
 package com.example.newser.Profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.newser.Utils.UniversalImageLoader;
 import com.example.newser.R;
@@ -23,7 +25,7 @@ public class EditProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle saveInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
-        profilePhoto = view.findViewById(R.id.profile_photo);
+        profilePhoto = view.findViewById(R.id.edit_profile_photo);
 
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
 
@@ -33,7 +35,10 @@ public class EditProfileFragment extends Fragment {
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                ProfileFragment fragment = new ProfileFragment();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, fragment);
+                transaction.commit();
             }
         });
         return view;

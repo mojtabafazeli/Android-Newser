@@ -2,6 +2,7 @@ package com.example.newser.Utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.example.newser.Models.User;
 import com.example.newser.Models.UserAccountSettings;
+import com.example.newser.Models.UserSettings;
 import com.example.newser.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -88,7 +90,7 @@ public class FirebaseMethods {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
 
-                            } else{
+                            } else {
                                 Toast.makeText(mContext, "couldn't send verification email.", Toast.LENGTH_LONG).show();
                             }
                         }
@@ -112,4 +114,55 @@ public class FirebaseMethods {
                 .setValue(settings);
     }
 
+    public UserSettings getUserSettings(DataSnapshot dataSnapshot) {
+        Log.d(TAG, "getUserAccountSettings: retrieving");
+
+        UserAccountSettings settings = new UserAccountSettings();
+        User user = new User();
+
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+            //user_account_settings node
+            if (ds.getKey().equals(mContext.getString(R.string.dbname_user_account_settings))) {
+                try {
+                    settings.setDisplay_name(
+                            ds.child(userID)
+                                    .getValue(UserAccountSettings.class)
+                                    .getDisplay_name()
+                    );
+                    settings.setDescription(
+                            ds.child(userID)
+                                    .getValue(UserAccountSettings.class)
+                                    .getDescription()
+                    );
+                    settings.setProfile_photo(
+                            ds.child(userID)
+                                    .getValue(UserAccountSettings.class)
+                                    .getProfile_photo()
+                    );
+                } catch (NullPointerException e) {
+                    Log.e(TAG, "getUserAccountSettings: NullPointException" + e.getMessage());
+                }
+            }
+            //user_account_settings node
+            if (ds.getKey().equals(mContext.getString(R.string.dbname_users))) {
+                user.setUsername(
+                        ds.child(userID)
+                                .getValue(User.class)
+                                .getUsername()
+                );
+                user.setEmail(
+                        ds.child(userID)
+                                .getValue(User.class)
+                                .getEmail()
+                );
+                user.setUser_id(
+                        ds.child(userID)
+                                .getValue(User.class)
+                                .getUser_id()
+                );
+            }
+        }
+        return new UserSettings(user, settings);
+    }
 }
