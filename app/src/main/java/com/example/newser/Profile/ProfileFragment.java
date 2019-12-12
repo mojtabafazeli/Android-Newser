@@ -86,11 +86,7 @@ public class ProfileFragment extends Fragment {
 //
         email.setText(user.getEmail());
 //        editEmail.setText(user.getEmail());
-//
-
     }
-
-    ;
 
     private void setupToolbar() {
         toolbar.inflateMenu(R.menu.profile_menu);

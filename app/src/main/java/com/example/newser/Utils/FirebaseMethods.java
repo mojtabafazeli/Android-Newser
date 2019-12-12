@@ -45,6 +45,18 @@ public class FirebaseMethods {
         }
     }
 
+    public void updateUsername(String username) {
+        Log.d(TAG, "Updating usename");
+        myRef.child(mContext.getString(R.string.dbname_users))
+                .child(userID)
+                .child(mContext.getString(R.string.field_username))
+                .setValue(username);
+        myRef.child(mContext.getString(R.string.dbname_user_account_settings))
+                .child(userID)
+                .child(mContext.getString(R.string.field_username))
+                .setValue(username);
+    }
+
     public boolean checkIfUsernameExists(String username, DataSnapshot datSanpshot) {
         Log.d(TAG, "checkIfUsernameExists: checking if " + username + "already exists.");
         User user = new User();
@@ -165,4 +177,13 @@ public class FirebaseMethods {
         }
         return new UserSettings(user, settings);
     }
+
+    public void updateEmail(String email) {
+        Log.d(TAG, "Updating usename");
+        myRef.child(mContext.getString(R.string.dbname_users))
+                .child(userID)
+                .child("email")
+                .setValue(email);
+    }
 }
+
