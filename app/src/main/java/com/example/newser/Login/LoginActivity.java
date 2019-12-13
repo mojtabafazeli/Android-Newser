@@ -18,12 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.newser.News.NewsActivity;
 import com.example.newser.R;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -42,8 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
-//        ActivityLoginNewBinding activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login_new);
-        setContentView(R.layout.activity_login_new);
+//        ActivityLoginNewBinding activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        setContentView(R.layout.activity_login);
         mProgressBar = findViewById(R.id.progressBar);
         mProgressBar.setVisibility(View.GONE);
 
