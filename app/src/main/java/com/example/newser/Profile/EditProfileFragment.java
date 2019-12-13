@@ -114,10 +114,10 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
         }
 
         if(!mUserSettings.getSettings().getDisplay_name().equals(displayName)){
-
+            firebaseMethods.updateUserAccountSettings(displayName,null);
         }
         if(!mUserSettings.getSettings().getDescription().equals(description)){
-
+            firebaseMethods.updateUserAccountSettings(null,description);
         }
 
     }
