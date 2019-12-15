@@ -10,15 +10,20 @@ import android.view.MenuItem;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.databinding.DataBindingUtil;
+import androidx.viewpager.widget.ViewPager;
 
-import com.example.newser.News.NewsActivity;
+import com.example.newser.News.AllFragment;
+import com.example.newser.News.CityFragment;
+import com.example.newser.News.CountryFragment;
+import com.example.newser.News.WorldFragment;
 import com.example.newser.R;
 import com.example.newser.Utils.BottomNavigationViewHelper;
 import com.example.newser.Utils.Permissions;
-import com.example.newser.databinding.ActivityNewsNewBinding;
-import com.example.newser.databinding.LayoutBottomNavigationViewBinding;
+import com.example.newser.Utils.SectionPagerAdapter;
+import com.google.android.material.tabs.TabLayout;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import java.util.Objects;
 
 
 public class CouchActivity extends AppCompatActivity {
@@ -27,10 +32,12 @@ public class CouchActivity extends AppCompatActivity {
 
     private Context mContext = CouchActivity.this;
 
+    private ViewPager viewPager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_new);
+        setContentView(R.layout.activity_couch);
         Log.d(TAG, "onCreate: started");
 
         if(checkPermissionsArray(Permissions.PERMISSIONS)) {
@@ -39,6 +46,7 @@ public class CouchActivity extends AppCompatActivity {
             verifyPermissionsArray(Permissions.PERMISSIONS);
         }
 
+        setupViewPager();
         setupBottomNavigationView();
 
     }
@@ -83,5 +91,22 @@ public class CouchActivity extends AppCompatActivity {
         Menu menu = bottomNavigationView.getMenu();
         MenuItem item = menu.getItem(1);
         item.setChecked(true);
+    }
+
+    private void setupViewPager(){
+        SectionPagerAdapter adapter = new SectionPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new AllFragment());
+        adapter.addFragment(new WorldFragment());
+        adapter.addFragment(new CountryFragment());
+        adapter.addFragment(new CityFragment());
+        ViewPager viewPager = findViewById(R.id.container);
+        viewPager.setAdapter(adapter);
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
+        Objects.requireNonNull(tabs.getTabAt(0)).setIcon(R.drawable.ic_all);
+        Objects.requireNonNull(tabs.getTabAt(1)).setIcon(R.drawable.ic_world);
+        Objects.requireNonNull(tabs.getTabAt(2)).setIcon(R.drawable.ic_country);
+        Objects.requireNonNull(tabs.getTabAt(3)).setIcon(R.drawable.ic_city);
+
     }
 }

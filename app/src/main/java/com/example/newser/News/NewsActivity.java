@@ -30,7 +30,7 @@ public class NewsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_new);
+        setContentView(R.layout.activity_news);
 
         setupFirebaseAuth();
         setupBottomNavigationView();

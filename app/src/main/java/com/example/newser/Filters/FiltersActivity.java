@@ -19,7 +19,7 @@ public class FiltersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
-        setContentView ( R.layout.activity_news_new);
+        setContentView ( R.layout.activity_news);
         Log.d(TAG, "onCreate: started");
 
         setupBottomNavigationView ();
