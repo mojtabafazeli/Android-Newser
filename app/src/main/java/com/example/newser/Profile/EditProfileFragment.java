@@ -18,6 +18,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.newser.Models.User;
 import com.example.newser.Models.UserAccountSettings;
 import com.example.newser.Models.UserSettings;
+import com.example.newser.Utils.FilePaths;
+import com.example.newser.Utils.FileSearch;
 import com.example.newser.Utils.FirebaseMethods;
 import com.example.newser.Utils.UniversalImageLoader;
 import com.example.newser.R;
@@ -38,6 +40,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import java.util.ArrayList;
+
 public class EditProfileFragment extends Fragment implements ConfirmPasswordDialog.OnConfirmPasswordListener {
     private static final String TAG = "ProfileActivity";
 
@@ -49,7 +53,7 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
 
     //EditProfile Fragment Widgets
     private EditText editUsername, editDisplayName, editDescription, editEmail, editPhoneNumber;
-    private TextView changeProfileView;
+    private TextView changeProfilePhoto;
     private ImageView editProfilePhoto, saveButton;
     private String userID;
     private UserSettings mUserSettings;
@@ -58,12 +62,19 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
         editProfilePhoto = view.findViewById(R.id.edit_profile_photo);
+        changeProfilePhoto = view.findViewById(R.id.changeProfilePhoto);
         editUsername = view.findViewById(R.id.edit_username);
         editDescription = view.findViewById(R.id.edit_description);
         editEmail = view.findViewById(R.id.edit_email);
         editPhoneNumber = view.findViewById(R.id.edit_phoneNumber);
         editDisplayName = view.findViewById(R.id.edit_display_name);
         firebaseMethods = new FirebaseMethods(getActivity());
+
+        //getting profile picture from the gallery
+        try {
+            String profilePhoto = getArguments().getString("profilePicutre");
+        } catch (NullPointerException e) {
+        }
 
 
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getActivity()));
@@ -88,6 +99,18 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
                 saveProfileSettings();
             }
         });
+
+        changeProfilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectProfilePicture fragment = new SelectProfilePicture();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, fragment);
+                transaction.commit();
+            }
+        });
+
+
         return view;
     }
 
@@ -113,11 +136,11 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
             //          -submit
         }
 
-        if(!mUserSettings.getSettings().getDisplay_name().equals(displayName)){
-            firebaseMethods.updateUserAccountSettings(displayName,null);
+        if (!mUserSettings.getSettings().getDisplay_name().equals(displayName)) {
+            firebaseMethods.updateUserAccountSettings(displayName, null);
         }
-        if(!mUserSettings.getSettings().getDescription().equals(description)){
-            firebaseMethods.updateUserAccountSettings(null,description);
+        if (!mUserSettings.getSettings().getDescription().equals(description)) {
+            firebaseMethods.updateUserAccountSettings(null, description);
         }
 
     }
@@ -261,7 +284,7 @@ public class EditProfileFragment extends Fragment implements ConfirmPasswordDial
                                         } catch (NullPointerException e) {
                                             Log.e(TAG, "onComplete: NullPointerException: " + e.getMessage());
                                         }
-                                    }else {
+                                    } else {
                                         Log.d(TAG, "User re-authentication failed");
                                     }
                                 }
